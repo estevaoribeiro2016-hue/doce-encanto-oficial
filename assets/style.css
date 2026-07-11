@@ -108,3 +108,6 @@ body.dark .helper,
 body.dark .lead,
 body.dark .product p,
 body.dark .choice p{color:var(--muted)}
+
+/* V54.6 - CEP independente */
+.cepRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.cepRow input{margin:0}.cepRow button{white-space:nowrap;min-height:44px}.cepStatus.loading{opacity:.85}.cepStatus.ok{color:#18794e}.cepStatus.error{color:#b42318}@media(max-width:520px){.cepRow{grid-template-columns:1fr}.cepRow button{width:100%}}
