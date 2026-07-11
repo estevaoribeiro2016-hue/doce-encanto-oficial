@@ -111,3 +111,7 @@ body.dark .choice p{color:var(--muted)}
 
 /* V54.6 - CEP independente */
 .cepRow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.cepRow input{margin:0}.cepRow button{white-space:nowrap;min-height:44px}.cepStatus.loading{opacity:.85}.cepStatus.ok{color:#18794e}.cepStatus.error{color:#b42318}@media(max-width:520px){.cepRow{grid-template-columns:1fr}.cepRow button{width:100%}}
+
+/* V54.7 — chave PIX mais visível */
+#pixCode{font-size:1.35rem!important;font-weight:900!important;letter-spacing:.08em!important;text-align:center!important;min-height:72px!important;line-height:1.35!important;padding:20px 14px!important;}
+@media(max-width:520px){#pixCode{font-size:1.2rem!important;letter-spacing:.06em!important;}}

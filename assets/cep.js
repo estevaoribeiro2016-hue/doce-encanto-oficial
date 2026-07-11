@@ -52,6 +52,30 @@
     }
   }
 
+  function normalizeCepData(data) {
+    if (!data || typeof data !== 'object') return null;
+    const normalized = {
+      cep: data.cep || data.code || '',
+      logradouro: data.logradouro || data.street || data.address || '',
+      bairro: data.bairro || data.neighborhood || data.district || '',
+      localidade: data.localidade || data.city || data.cidade || '',
+      uf: data.uf || data.state || data.estado || ''
+    };
+    const hasLocation = normalized.logradouro || normalized.bairro || normalized.localidade || normalized.uf;
+    return hasLocation ? normalized : null;
+  }
+
+  async function tryProvider(url, validator) {
+    try {
+      const response = await getJson(url, 9000);
+      if (validator && !validator(response)) return null;
+      return normalizeCepData(response);
+    } catch (error) {
+      console.warn('Fonte de CEP indisponível:', url, error);
+      return null;
+    }
+  }
+
   async function searchCep() {
     const input = byId('cep');
     if (!input) return;
@@ -67,28 +91,44 @@
     if (byId('cepSearchBtn')) byId('cepSearchBtn').disabled = true;
 
     try {
-      let data = null;
-      try {
-        const viaCep = await getJson('https://viacep.com.br/ws/' + cep + '/json/');
-        if (viaCep && !viaCep.erro) data = viaCep;
-      } catch (error) {
-        console.warn('ViaCEP indisponível:', error);
-      }
+      const providers = [
+        ['https://viacep.com.br/ws/' + cep + '/json/', data => data && !data.erro],
+        ['https://brasilapi.com.br/api/cep/v2/' + cep, data => data && !data.errors],
+        ['https://brasilapi.com.br/api/cep/v1/' + cep, data => data && !data.errors],
+        ['https://opencep.com/v1/' + cep, data => data && !data.error],
+        ['https://cep.awesomeapi.com.br/json/' + cep, data => data && !data.status]
+      ];
 
-      if (!data) {
-        try {
-          const brasilApi = await getJson('https://brasilapi.com.br/api/cep/v1/' + cep);
-          if (brasilApi && brasilApi.cep) data = brasilApi;
-        } catch (error) {
-          console.warn('BrasilAPI indisponível:', error);
+      let best = null;
+      for (const [url, validator] of providers) {
+        const result = await tryProvider(url, validator);
+        if (!result) continue;
+        if (!best) best = result;
+        // Para assim que encontrar logradouro e localização completos.
+        if (result.logradouro && result.localidade && result.uf) {
+          best = result;
+          break;
         }
+        // Combina dados de fontes diferentes para preencher o máximo possível.
+        best = {
+          cep: best.cep || result.cep,
+          logradouro: best.logradouro || result.logradouro,
+          bairro: best.bairro || result.bairro,
+          localidade: best.localidade || result.localidade,
+          uf: best.uf || result.uf
+        };
       }
 
-      if (!data) throw new Error('CEP não encontrado');
-      fill(data);
+      if (!best) throw new Error('CEP não encontrado');
+      fill(best);
+
+      // Um CEP é aceito como válido mesmo quando a base não possui logradouro.
+      if (!best.logradouro && (best.bairro || best.localidade || best.uf)) {
+        setStatus('CEP válido e localização preenchida. Digite apenas a rua e o número.', 'ok');
+      }
     } catch (error) {
       console.error('Falha na consulta do CEP:', error);
-      setStatus('Não foi possível consultar o CEP. Clique em Buscar CEP novamente ou preencha o endereço manualmente.', 'error');
+      setStatus('CEP não localizado nas bases consultadas. Confira os números ou preencha o endereço manualmente.', 'error');
     } finally {
       if (byId('cepSearchBtn')) byId('cepSearchBtn').disabled = false;
     }
