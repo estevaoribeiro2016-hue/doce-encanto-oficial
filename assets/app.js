@@ -382,6 +382,38 @@ async function lookupCep(force = false) {
   }
 }
 
+function bindCepLookup() {
+  const cepInput = $('#cep');
+  if (!cepInput || cepInput.dataset.cepBound === '1') return;
+  cepInput.dataset.cepBound = '1';
+  let cepTimer = null;
+
+  const scheduleLookup = (force = false, delay = 250) => {
+    const raw = onlyDigits(cepInput.value);
+    cepInput.value = maskCep(raw);
+    if (raw !== lastResolvedCep) lastResolvedCep = '';
+    const status = $('#cepStatus');
+    if (status) {
+      status.textContent = raw.length === 8 ? 'Buscando endereço pelo CEP...' : 'Digite os 8 números do CEP.';
+      status.className = raw.length === 8 ? 'cepStatus loading' : 'cepStatus';
+    }
+    clearTimeout(cepTimer);
+    if (raw.length === 8) cepTimer = setTimeout(() => lookupCep(force), delay);
+  };
+
+  cepInput.addEventListener('input', () => scheduleLookup(false, 250));
+  cepInput.addEventListener('keyup', () => {
+    if (onlyDigits(cepInput.value).length === 8) scheduleLookup(false, 100);
+  });
+  cepInput.addEventListener('blur', () => {
+    if (onlyDigits(cepInput.value).length === 8) lookupCep(true);
+  });
+  cepInput.addEventListener('change', () => {
+    if (onlyDigits(cepInput.value).length === 8) lookupCep(true);
+  });
+  cepInput.addEventListener('paste', () => setTimeout(() => scheduleLookup(true, 0), 20));
+}
+
 function resetDeliveryQuote() {
   deliveryInfo = { type: $('[name=fulfillment]:checked')?.value || 'retirada', fee: 0, status: 'Não aplicado', method: deliveryInfo?.method || DELIVERY_MODE, applied: false, region: '' };
   const box = $('#deliveryQuote');
@@ -568,7 +600,8 @@ async function registerFaceId() {
 async function loginAdmin(){const u=$('#user').value.trim(),p=$('#pass').value,email=ADMIN_EMAILS[u];if(!email)return alert('Usuário ou senha incorretos.');if(!supabaseReady)return alert('Configure o Supabase antes de acessar a central online.');const btn=$('#loginBtn');btn.disabled=true;btn.textContent='Entrando...';try{const {error}=await supabaseClient.auth.signInWithPassword({email,password:p});if(error)throw error;const ok=await requireFaceId(u);if(!ok)return;currentAdmin=u;await loadAdminSupabaseState();subscribeAdminRealtime();$('#adminPanel').classList.remove('hidden');$('.login').classList.add('hidden');renderAdmin();}catch(e){console.error(e);alert('Usuário ou senha incorretos, ou o usuário ainda não foi criado no Supabase.');}finally{btn.disabled=false;btn.textContent='Entrar';}}
 
 async function init() {
-  await initSupabase();
+  bindCepLookup();
+  initSupabase().catch(e => console.error('Falha ao iniciar Supabase:', e));
   renderProducts(); renderPromo(); renderCart(); addChat('Oii! Eu sou a Trufita AI 💖. Posso indicar sabores, explicar promoções e consultar o estoque para você.');
   $('#cartOpen').onclick = () => { $('#cartDrawer').classList.add('open'); $('#overlay').classList.add('show'); };
   $('#cartClose').onclick = $('#overlay').onclick = () => { $('#cartDrawer').classList.remove('open'); $('#overlay').classList.remove('show'); };
@@ -597,26 +630,7 @@ async function init() {
     const metaTheme = document.querySelector('meta[name=theme-color]');
     if (metaTheme) metaTheme.setAttribute('content', isDark ? '#20110e' : '#ff69a8');
   };
-  if ($('#cep')) {
-    let cepTimer = null;
-    $('#cep').addEventListener('input', () => {
-      const raw = onlyDigits($('#cep').value);
-      $('#cep').value = maskCep($('#cep').value);
-      if (raw !== lastResolvedCep) {
-        lastResolvedCep = '';
-        const status = $('#cepStatus');
-        if (status) { status.textContent = raw.length === 8 ? 'Aguarde, consultando o CEP...' : 'Digite os 8 números do CEP.'; status.className = 'cepStatus'; }
-      }
-      clearTimeout(cepTimer);
-      if (raw.length === 8) cepTimer = setTimeout(() => lookupCep(false), 700);
-    });
-    $('#cep').addEventListener('blur', () => { if (onlyDigits($('#cep').value).length === 8) lookupCep(false); });
-    $('#cep').addEventListener('change', () => { if (onlyDigits($('#cep').value).length === 8) lookupCep(true); });
-    $('#cep').addEventListener('paste', () => setTimeout(() => {
-      $('#cep').value = maskCep($('#cep').value);
-      if (onlyDigits($('#cep').value).length === 8) lookupCep(true);
-    }, 30));
-  }
+  bindCepLookup();
   ['rua','numero','bairro','cidade','estado'].forEach(id => $('#' + id)?.addEventListener('input', () => {
     if ($('[name=fulfillment]:checked')?.value === 'entrega' && $('#bairro')?.value.trim()) refreshDeliveryQuote(false);
     updateTotals({ skipQuoteRefresh: true });
