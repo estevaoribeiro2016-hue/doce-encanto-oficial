@@ -17,7 +17,7 @@ const STORE_ADDRESS = 'Rua Aletes, 78, Pindorama, Belo Horizonte/MG, 30865-180';
 const DELIVERY_MODE = 'Uber Moto';
 const DELIVERY_FEES = { pindorama: 5, filadelfia: 5, 'jardim filadelfia': 5, 'novo gloria': 6, gloria: 6, coqueiros: 6 };
 const DEFAULT_DELIVERY_FEE = 10;
-const BUSINESS_WHATSAPP = '5531982263220';
+const BUSINESS_WHATSAPP = '5531982263220'; // WhatsApp corporativo: (31) 98226-3220
 const PIX_KEY = '31992180872';
 let newOrderAlarmEnabled = localStorage.getItem(STORE + 'newOrderAlarm') === '1';
 const ADMIN_USERS = {
