@@ -17,7 +17,7 @@ const STORE_ADDRESS = 'Rua Aletes, 78, Pindorama, Belo Horizonte/MG, 30865-180';
 const DELIVERY_MODE = 'Uber Moto';
 const DELIVERY_FEES = { pindorama: 5, filadelfia: 5, 'jardim filadelfia': 5, 'novo gloria': 6, gloria: 6, coqueiros: 6 };
 const DEFAULT_DELIVERY_FEE = 10;
-const BUSINESS_WHATSAPP = '5531992180872';
+const BUSINESS_WHATSAPP = '5531982263220';
 const PIX_KEY = '31992180872';
 let newOrderAlarmEnabled = localStorage.getItem(STORE + 'newOrderAlarm') === '1';
 const ADMIN_USERS = {
@@ -581,7 +581,22 @@ async function init() {
   $('#aiForm').onsubmit = e => { e.preventDefault(); const q = $('#aiInput').value.trim(); if (!q) return; addChat(q, 'user'); const a = aiAnswer(q); setTimeout(() => { addChat(a); say(a.split('.')[0] + '.'); }, 160); $('#aiInput').value = ''; };
   $$('.chips button').forEach(b => b.onclick = () => { $('#aiInput').value = b.dataset.q; $('#aiForm').dispatchEvent(new Event('submit')); });
   $('#loginBtn').onclick = loginAdmin; $('#faceRegister') && ($('#faceRegister').onclick = registerFaceId);
-  $('#themeToggle').onclick = () => { document.body.classList.toggle('dark'); $('#themeToggle').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙'; };
+  const THEME_KEY = STORE + 'theme';
+  const savedTheme = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+  document.body.classList.toggle('dark', initialDark);
+  $('#themeToggle').textContent = initialDark ? '☀️' : '🌙';
+  $('#themeToggle').setAttribute('aria-label', initialDark ? 'Ativar modo claro' : 'Ativar modo noite');
+  $('#themeToggle').onclick = () => {
+    const isDark = !document.body.classList.contains('dark');
+    document.body.classList.toggle('dark', isDark);
+    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+    $('#themeToggle').textContent = isDark ? '☀️' : '🌙';
+    $('#themeToggle').setAttribute('aria-label', isDark ? 'Ativar modo claro' : 'Ativar modo noite');
+    const metaTheme = document.querySelector('meta[name=theme-color]');
+    if (metaTheme) metaTheme.setAttribute('content', isDark ? '#20110e' : '#ff69a8');
+  };
   if ($('#cep')) {
     let cepTimer = null;
     $('#cep').addEventListener('input', () => {
