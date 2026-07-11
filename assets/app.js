@@ -11,7 +11,7 @@ const BASE_PRODUCTS = [
   { id: 'uva-verde', name: 'Uva Verde', emoji: '🍇', price: 5, stock: 0, min: 0, unavailable: true, desc: 'Sabor de uva verde. Visível no cardápio e indisponível no momento.' }
 ];
 
-const STORE = 'de_v54_';
+const STORE = 'de_v54_clean_';
 const LEGACY_STORES = ['de_v40_', 'de_v41_', 'de_v42_'];
 const STORE_ADDRESS = 'Rua Aletes, 78, Pindorama, Belo Horizonte/MG, 30865-180';
 const DELIVERY_MODE = 'Uber Moto';
@@ -460,7 +460,7 @@ async function finish(){
   const fulfillment=$('[name=fulfillment]:checked')?.value||'retirada';let payment=$('#payment')?.value||'pix';let address=null;
   if(fulfillment==='entrega'){payment='pix';$('#payment').value='pix';const cep=($('#cep')?.value||'').trim(),rua=($('#rua')?.value||'').trim(),numero=($('#numero')?.value||'').trim(),bairro=($('#bairro')?.value||'').trim(),cidade=($('#cidade')?.value||'').trim(),estado=($('#estado')?.value||'').trim();if(!cep||!rua||!numero||!bairro||!cidade||!estado)return alert('Preencha CEP, rua, número, bairro, cidade e UF para entrega.');address={cep,rua,numero,complemento:($('#complemento')?.value||'').trim(),bairro,cidade,estado};}
   const btn=$('#finishOrder');btn.disabled=true;btn.textContent='Finalizando...';
-  try{const payload={customerName,customerPhone,items:JSON.parse(JSON.stringify(cart)),fulfillment,address,payment,paymentLabel:normalizePaymentLabel(payment)};const {data,error}=await supabaseClient.rpc('create_order',{p_payload:payload});if(error)throw error;const order=orderFromSupabase(data);orders.unshift(order);cart=[];save();await loadPublicInventory();renderCart();renderProducts();renderPromo();confetti();jump('Pedido salvo online! Teteu e Ingrid verão em tempo real. 💖');window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(buildWhatsappMessage(order))}`,'_blank');location.hash='empresa';}
+  try{const payload={customerName,customerPhone,items:JSON.parse(JSON.stringify(cart)),fulfillment,address,payment,paymentLabel:normalizePaymentLabel(payment)};const {data,error}=await supabaseClient.rpc('create_order_v54_clean',{p_payload:payload});if(error)throw error;const order=orderFromSupabase(data);orders.unshift(order);cart=[];save();await loadPublicInventory();renderCart();renderProducts();renderPromo();confetti();jump('Pedido salvo online! Teteu e Ingrid verão em tempo real. 💖');window.open(`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(buildWhatsappMessage(order))}`,'_blank');location.hash='empresa';}
   catch(e){console.error(e);alert(e.message||'Não foi possível finalizar o pedido.');}
   finally{btn.disabled=false;btn.textContent='Finalizar pedido';}
 }
