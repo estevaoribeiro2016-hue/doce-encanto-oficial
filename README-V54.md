@@ -1,23 +1,13 @@
-# Doce Encanto V54 — base real V51
+# Doce Encanto V54.7 — Completa
 
-Esta versão foi construída sobre os arquivos da V51 estável.
+Alterações pontuais sobre a V54.6:
 
-## Para atualizar um banco que já usa a V51
-1. Faça backup do projeto publicado e, no Supabase, do banco.
-2. Execute somente `update-v54.sql` em Supabase > SQL Editor.
-3. Publique os arquivos desta pasta no GitHub/Vercel.
-4. Recarregue com Ctrl+F5.
+- CEP consulta múltiplas fontes em sequência: ViaCEP, BrasilAPI v2/v1, OpenCEP e AwesomeAPI.
+- CEP válido é aceito mesmo quando uma fonte não possui logradouro; bairro, cidade e UF são preenchidos automaticamente.
+- Dados de fontes diferentes são combinados para tentar obter a rua.
+- Mensagem de pedido entregue alterada para: “Que você possa aproveitar esse doce momento 💖🍫”.
+- Chave PIX 31992180872 com fonte maior, negrito e centralizada.
+- WhatsApp corporativo preservado em 31982263220.
+- PIX e titular preservados.
 
-## Para uma instalação nova
-Execute `supabase-schema.sql` completo.
-
-## Testes obrigatórios antes da divulgação
-- pedido de retirada;
-- pedido de entrega em Pindorama, Jardim Filadélfia e Novo Glória;
-- cadastro de um novo bairro e confirmação da taxa no checkout;
-- mudança de status para Pronto e impressão 58 mm;
-- mudança para Entregue e conferência no faturamento mensal;
-- cancelamento e devolução do estoque;
-- cadastro biométrico em HTTPS.
-
-A impressão usa a janela de impressão do navegador. Para impressão totalmente automática sem diálogo, é necessário configurar o navegador/computador em modo quiosque.
+Observação: quando nenhuma base pública possuir a rua daquele CEP, o sistema aceita o CEP e preenche a localização disponível, solicitando apenas rua e número.

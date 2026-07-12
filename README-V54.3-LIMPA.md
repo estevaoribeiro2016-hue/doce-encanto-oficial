@@ -1,12 +1,19 @@
-# Doce Encanto V54.3 Limpa
+# Doce Encanto V54.2 LIMPA
 
-Atualização incremental sobre a V54.2 limpa.
+Base: V54.1 funcional.
 
-## Alterações
-- WhatsApp corporativo atualizado para **31982263220**.
-- Chave PIX mantida em **31992180872**.
-- Modo noite corrigido e aplicado a campos, cartões, botões, Central e checkout.
-- Preferência de tema salva no navegador.
-- Cache de arquivos atualizado para `v=543-clean`.
+Alteração principal:
+- o checkout usa a nova função Supabase `create_order_v54_clean`;
+- não existe validação de e-mail para o cliente;
+- não existe Mercado Pago, preferência, webhook ou geração automática de PIX;
+- mantém PIX fixo, QR Code fixo, Supabase, estoque, Central, CEP e WhatsApp.
 
-Nenhuma alteração foi feita na chave PIX, no Supabase, estoque, login ou estrutura do pedido.
+## PASSO OBRIGATÓRIO NO SUPABASE
+
+Antes de testar a finalização, abra o Supabase > SQL Editor, cole todo o conteúdo de:
+
+`SUPABASE-CORRECAO-V54.2-LIMPA.sql`
+
+e clique em **Run**.
+
+Sem executar esse SQL, o site não encontrará a nova função limpa de pedidos.

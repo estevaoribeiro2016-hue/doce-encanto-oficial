@@ -1,7 +1,8 @@
-# Doce Encanto V54.5 — CEP reforçado
+# Doce Encanto V54.4 — WhatsApp corporativo confirmado
 
-- Busca de CEP iniciada imediatamente, sem aguardar o Supabase.
-- Preenchimento automático ao digitar, colar, alterar ou sair do campo.
-- ViaCEP, BrasilAPI e fallback local preservados.
-- WhatsApp corporativo: 31982263220.
-- Chave PIX preservada: 31992180872.
+- WhatsApp corporativo dos pedidos: **(31) 98226-3220**.
+- Número usado no link do WhatsApp: **5531982263220**.
+- Chave PIX mantida: **31992180872**.
+- Titular PIX mantido: **Ingrid Emanuelle Damasceno**.
+- Modo noite e demais funções preservados.
+- Cache de scripts atualizado para `v=544-whatsapp`.

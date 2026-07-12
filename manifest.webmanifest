@@ -1,1 +1,103 @@
-{"name":"Doce Encanto","short_name":"Doce Encanto","start_url":"/","display":"standalone","background_color":"#fff7f0","theme_color":"#7a3f2b","icons":[]}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Doce Encanto | V55 Completa</title>
+  <meta name="theme-color" content="#ff69a8" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="assets/style.css?v=55-completa" />
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home"><img src="assets/trufita-oficial.png" alt="Trufita AI"><span>Doce Encanto</span></a>
+    <nav><a href="#promo">Promoção</a><a href="#cardapio">Cardápio</a><a href="#trufita-ai">Trufita AI</a><a href="#minha-conta">Minha conta</a><a href="#empresa">Empresa</a></nav>
+    <div class="actions"><button id="themeToggle" class="ghost">🌙</button><button id="cartOpen" class="cartBtn">🛒 <b id="cartCount">0</b></button></div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="copy">
+        <p class="tag">Trufas artesanais • retirada ou entrega</p>
+        <h1>Seu momento doce começa aqui ✨</h1>
+        <p class="lead">Monte seu pedido, acompanhe a Trufita AI e finalize com um checkout mais organizado. A empresa agora tem controle inteligente de pedidos, estoque e financeiro.</p>
+        <div class="cta"><a class="primary" href="#promo">Montar promoção</a><a class="secondary" href="#cardapio">Ver cardápio</a></div>
+      </div>
+      <div class="mascotArea">
+        <div id="trufita" class="trufita"><img src="assets/trufita-oficial.png" alt="Trufita AI"><span class="wave">👋</span><span class="sparkle">✨</span></div>
+        <div id="speech" class="speech">Oi! Eu sou a <b>Trufita AI</b> 💖 Vou te ajudar a montar a promoção.</div>
+      </div>
+    </section>
+
+    <section id="promo" class="promoMaster">
+      <div class="promoHeader">
+        <p class="tag">🔥 Promoção da semana</p>
+        <h2>Monte sua caixa: <span>3 trufas por R$14</span></h2>
+        <p>Escolha 3 sabores. Pode repetir: 3 Maracujá, 2 Oreo + 1 Coco, ou qualquer combinação.</p>
+      </div>
+
+      <div class="promoGame">
+        <div class="promoStatus" id="promoStatus">
+          <div class="slots"><span></span><span></span><span></span></div>
+          <div class="progress"><i id="promoProgress"></i></div>
+          <b id="promoCounter">0 de 3 escolhidas</b>
+        </div>
+
+        <div id="promoChoices" class="promoChoices"></div>
+
+        <div class="promoResult" id="promoResult">
+          <h3>🎯 Objetivo: escolha 3 trufas</h3>
+          <p id="promoMsg">A Trufita pode sugerir uma combinação deliciosa para você.</p>
+          <div class="promoButtons">
+            <button id="suggestPromo" class="secondary">💖 Quero sugestão da Trufita</button>
+            <button id="resetPromo" class="ghost">Limpar seleção</button>
+            <button id="addPromo" class="primary" disabled>Adicionar promoção</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cardapio" class="section">
+      <div class="sectionTitle"><p class="tag">Cardápio</p><h2>Trufas disponíveis</h2></div>
+      <div id="products" class="grid"></div>
+    </section>
+
+    <section id="trufita-ai" class="section aiBox">
+      <div class="sectionTitle"><p class="tag">Trufita AI</p><h2>Vendedora virtual</h2></div>
+      <div class="chatWrap">
+        <div id="chatLog" class="chat"></div>
+        <form id="aiForm" class="chatForm"><input id="aiInput" placeholder="Pergunte: qual trufa não é muito doce?" autocomplete="off"><button class="primary">Enviar</button></form>
+        <div class="chips"><button data-q="Qual trufa não é muito doce?">Menos doce</button><button data-q="Como funciona a promoção?">Promoção</button><button data-q="Tenho R$20">Tenho R$20</button><button data-q="Quero presentear alguém">Presente</button></div>
+      </div>
+    </section>
+
+    <section id="checkout" class="section checkout">
+      <div class="sectionTitle"><p class="tag">Checkout</p><h2>Finalize seu pedido</h2></div>
+      <div class="checkoutGrid checkoutGridV33">
+        <div class="panel"><h3>Cliente</h3><input id="customerName" placeholder="Nome do cliente"><input id="customerPhone" placeholder="Telefone / WhatsApp" inputmode="tel"><small class="cepStatus">Esses dados vão completos para o WhatsApp da empresa.</small></div>
+        <div class="panel"><h3>Recebimento</h3><label><input type="radio" name="fulfillment" value="retirada" checked> Retirada na loja</label><label><input type="radio" name="fulfillment" value="entrega"> Entrega</label><p id="storeAddress">Retirada: Rua Aletes, 78, Pindorama, Belo Horizonte/MG, 30865-180.</p><div id="addressBox" class="hidden"><div class="cepRow"><input id="cep" placeholder="CEP" inputmode="numeric" autocomplete="postal-code" maxlength="9"><button id="cepSearchBtn" class="secondary" type="button">Buscar CEP</button></div><small id="cepStatus" class="cepStatus">Digite o CEP para preencher a rua automaticamente.</small><input id="rua" placeholder="Rua"><input id="numero" placeholder="Número"><input id="bairro" placeholder="Bairro"><div class="addressSplit"><input id="cidade" placeholder="Cidade"><input id="estado" placeholder="UF" maxlength="2"></div><button id="calcDistance" class="secondary full" type="button">Aplicar frete por bairro</button><div class="deliveryRules"><b>🛵 Entrega realizada por Uber Moto</b><br><small>Pindorama, Filadélfia e Jardim Filadélfia: R$5 • Novo Glória: R$6 • Demais bairros: R$10 • 🎁 Frete grátis acima de R$30</small></div><div id="deliveryQuote" class="deliveryQuote hidden"></div></div></div>
+        <div class="panel"><h3>Pagamento</h3><select id="payment"><option value="pix">Pix</option><option value="dinheiro">Dinheiro na retirada</option><option value="cartao">Cartão na retirada</option></select><div id="pixBox" class="pixBox"><img class="qr-img" src="assets/pix-qrcode.png" alt="QR Code Pix da Doce Encanto"><p class="pixHint">Escaneie o QR Code ou copie a chave Pix abaixo.<br><b>Titular: Ingrid Emanuelle Damasceno</b></p><textarea id="pixCode" readonly>31992180872</textarea><button id="copyPix" class="secondary" type="button">Copiar chave Pix</button></div></div>
+        <div class="panel"><h3>Resumo</h3><div id="checkoutItems"></div><div class="line"><span>Produtos</span><b id="subtotal">R$0,00</b></div><div class="line"><span>Frete</span><b id="frete">R$0,00</b></div><div id="freeShipSummary"></div><div class="line"><span>Entrega</span><b id="distanceLabel">—</b></div><div class="line total"><span>Total</span><b id="grandTotal">R$0,00</b></div><button id="finishOrder" class="primary full">Finalizar pedido</button></div>
+      </div>
+    </section>
+
+
+    <section id="minha-conta" class="section customerArea">
+      <div class="sectionTitle"><p class="tag">Área do cliente</p><h2>Favoritos e meus pedidos</h2></div>
+      <div class="customerGrid">
+        <div class="panel"><h3>❤️ Meus favoritos</h3><p class="helper">Salve seus sabores preferidos tocando no coração do cardápio.</p><div id="favoriteProducts" class="favoriteGrid"></div></div>
+        <div class="panel"><h3>📚 Histórico de pedidos</h3><input id="customerHistoryPhone" placeholder="Digite seu telefone / WhatsApp" inputmode="tel"><button id="loadCustomerHistory" class="primary full" type="button">Buscar meus pedidos</button><small class="cepStatus">Use o mesmo telefone informado na compra.</small><div id="customerOrderHistory"></div></div>
+      </div>
+    </section>
+
+    <section id="empresa" class="section companySection"><div class="panel"><p class="tag">Acesso restrito</p><h2>Central da Empresa V55 OFICIAL</h2><p>Área segura com pedidos, estoque, produção, financeiro e sincronização online em tempo real para Teteu e Ingrid.</p><div class="login"><input id="user" placeholder="Usuário"><input id="pass" type="password" placeholder="Senha"><button id="loginBtn" class="primary">Entrar</button><button id="faceRegister" class="secondary" type="button">Cadastrar Face ID/Windows Hello</button><small>Primeiro acesso sempre exige usuário e senha. O Face ID/Windows Hello só pode ser cadastrado depois de informar um usuário autorizado.</small></div><div id="adminPanel" class="hidden"></div></div></section>
+  </main>
+
+  <aside id="cartDrawer" class="drawer"><div class="drawerHead"><h2>Meu pedido</h2><button id="cartClose" class="ghost">Voltar</button></div><div id="cartItems"></div><div class="drawerTotal"><span>Total</span><b id="cartTotal">R$0,00</b></div><button id="clearCart" class="ghost full">Limpar carrinho</button><a id="goCheckout" href="#checkout" class="primary full">Ir para pagamento</a></aside>
+  <div id="overlay" class="overlay"></div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/cep.js?v=55-completa"></script>
+  <script src="assets/supabase-config.js?v=55-completa"></script>
+  <script src="assets/app.js?v=55-completa"></script>
+</body>
+</html>

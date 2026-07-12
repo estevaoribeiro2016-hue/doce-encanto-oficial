@@ -1,10 +1,15 @@
-# Correções técnicas da V51
+DOCE ENCANTO V50 REAL — SUPABASE CONFIGURADO
 
-## Erro de pilha
-A V50 possuía ciclo recursivo entre `updateTotals()` e `applyDeliveryByRegion()`. A V51 separa atualização de cotação e renderização do total, eliminando o loop infinito.
+Project URL configurada:
+https://lswmxluskdgnewqezkpc.supabase.co
 
-## CEP
-A consulta agora tenta ViaCEP, depois BrasilAPI e, por último, uma base local de contingência. Requisições antigas são ignoradas e o campo usa atraso controlado para não travar.
+Publishable key configurada no arquivo:
+assets/supabase-config.js
 
-## Cache
-Os scripts receberam nova versão e o service worker remove caches anteriores.
+IMPORTANTE:
+- A chave secreta sb_secret/service_role NÃO foi usada.
+- O site depende de o SQL da V50 já ter sido executado no Supabase.
+- Os usuários abaixo precisam existir em Authentication > Users:
+  teteu.trufa@doceencanto.local
+  ingrid.trufa@doceencanto.local
+- Depois de enviar ao GitHub, aguarde o deploy da Vercel.
