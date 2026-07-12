@@ -56,3 +56,51 @@ grant execute on function public.admin_adjust_order_revenue_v55(text,numeric,tex
 do $$ begin
  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='revenue_adjustments') then alter publication supabase_realtime add table public.revenue_adjustments; end if;
 end $$;
+
+-- V55.2 — restaurar pedido cancelado por engano
+create or replace function public.admin_restore_canceled_order_v55(p_order_id text)
+returns jsonb language plpgsql security definer set search_path=public as $$
+declare
+  v_order public.orders;
+  v_item jsonb;
+  v_flavor jsonb;
+  v_need jsonb := '{}'::jsonb;
+  v_rec record;
+  v_qty int;
+begin
+  if not public.is_doce_encanto_admin() then raise exception 'Acesso negado.'; end if;
+  select * into v_order from public.orders where id=p_order_id for update;
+  if v_order.id is null then raise exception 'Pedido não encontrado.'; end if;
+  if v_order.status <> 'Cancelado' then raise exception 'Este pedido não está cancelado.'; end if;
+
+  for v_item in select value from jsonb_array_elements(v_order.items) loop
+    v_qty := greatest(1,coalesce((v_item->>'qty')::int,1));
+    if v_item ? 'flavors' then
+      for v_flavor in select value from jsonb_array_elements(v_item->'flavors') loop
+        v_need := jsonb_set(v_need,array[v_flavor->>'id'],to_jsonb(coalesce((v_need->>(v_flavor->>'id'))::int,0)+v_qty),true);
+      end loop;
+    else
+      v_need := jsonb_set(v_need,array[v_item->>'id'],to_jsonb(coalesce((v_need->>(v_item->>'id'))::int,0)+v_qty),true);
+    end if;
+  end loop;
+
+  for v_rec in select key,value::int qty from jsonb_each_text(v_need) loop
+    if coalesce((select stock from public.inventory where flavor_id=v_rec.key),0) < v_rec.qty then
+      raise exception 'Estoque insuficiente para restaurar o pedido (%).', v_rec.key;
+    end if;
+  end loop;
+
+  for v_rec in select key,value::int qty from jsonb_each_text(v_need) loop
+    update public.inventory set stock=stock-v_rec.qty,updated_at=now() where flavor_id=v_rec.key;
+    insert into public.stock_movements(type,flavor_id,flavor_name,emoji,qty,reason,order_id,actor_email)
+    select 'Restauração',flavor_id,flavor_name,emoji,-v_rec.qty,'Pedido cancelado restaurado / estoque descontado novamente',p_order_id,auth.jwt()->>'email'
+    from public.inventory where flavor_id=v_rec.key;
+  end loop;
+
+  update public.orders
+  set status='Recebido', stock_restored=false, canceled_at=null, delivered_at=null, ready_at=null, updated_at=now()
+  where id=p_order_id returning * into v_order;
+  return to_jsonb(v_order);
+end $$;
+
+grant execute on function public.admin_restore_canceled_order_v55(text) to authenticated;
