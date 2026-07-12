@@ -1,7 +1,7 @@
-# Doce Encanto V54.5 — CEP reforçado
+# V54.6 — CEP independente
 
-- Busca de CEP iniciada imediatamente, sem aguardar o Supabase.
-- Preenchimento automático ao digitar, colar, alterar ou sair do campo.
-- ViaCEP, BrasilAPI e fallback local preservados.
-- WhatsApp corporativo: 31982263220.
-- Chave PIX preservada: 31992180872.
+- Novo arquivo `assets/cep.js`, carregado antes do Supabase e do app principal.
+- Preenchimento automático ao digitar 8 números, colar, sair do campo ou pressionar Enter.
+- Botão **Buscar CEP** como alternativa manual.
+- ViaCEP com BrasilAPI como segunda fonte.
+- WhatsApp corporativo e PIX preservados.

@@ -1,12 +1,8 @@
-# Doce Encanto V54.3 Limpa
+# Doce Encanto V54.4 — WhatsApp corporativo confirmado
 
-Atualização incremental sobre a V54.2 limpa.
-
-## Alterações
-- WhatsApp corporativo atualizado para **31982263220**.
-- Chave PIX mantida em **31992180872**.
-- Modo noite corrigido e aplicado a campos, cartões, botões, Central e checkout.
-- Preferência de tema salva no navegador.
-- Cache de arquivos atualizado para `v=543-clean`.
-
-Nenhuma alteração foi feita na chave PIX, no Supabase, estoque, login ou estrutura do pedido.
+- WhatsApp corporativo dos pedidos: **(31) 98226-3220**.
+- Número usado no link do WhatsApp: **5531982263220**.
+- Chave PIX mantida: **31992180872**.
+- Titular PIX mantido: **Ingrid Emanuelle Damasceno**.
+- Modo noite e demais funções preservados.
+- Cache de scripts atualizado para `v=544-whatsapp`.

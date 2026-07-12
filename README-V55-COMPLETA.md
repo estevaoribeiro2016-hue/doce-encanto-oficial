@@ -1,23 +1,22 @@
-# Doce Encanto V54 — base real V51
+# Doce Encanto V55 — Completa
 
-Esta versão foi construída sobre os arquivos da V51 estável.
+Base oficial: V54.7 funcional.
 
-## Para atualizar um banco que já usa a V51
-1. Faça backup do projeto publicado e, no Supabase, do banco.
-2. Execute somente `update-v54.sql` em Supabase > SQL Editor.
-3. Publique os arquivos desta pasta no GitHub/Vercel.
-4. Recarregue com Ctrl+F5.
+## Novidades
+- Favoritos de sabores na área do cliente.
+- Histórico de pedidos por telefone.
+- Botão para repetir pedido recente com validação do estoque atual.
+- Estoque inteligente preservado: baixa na finalização, bloqueio por falta, devolução no cancelamento, mínimo e movimentações.
+- Confirmação obrigatória antes de cancelar.
+- Botão para marcar/desmarcar pedido de teste.
+- Pedidos de teste não entram no faturamento real.
+- Usuário Teteu pode corrigir o valor considerado no faturamento.
+- Correções financeiras ficam registradas em revenue_adjustments.
 
-## Para uma instalação nova
-Execute `supabase-schema.sql` completo.
+## Instalação obrigatória
+1. Abra o Supabase > SQL Editor.
+2. Execute o arquivo `ATUALIZACAO-V55.sql` uma única vez.
+3. Publique todos os arquivos desta pasta no mesmo projeto da V54.7.
+4. Faça recarregamento completo do navegador (Ctrl+F5).
 
-## Testes obrigatórios antes da divulgação
-- pedido de retirada;
-- pedido de entrega em Pindorama, Jardim Filadélfia e Novo Glória;
-- cadastro de um novo bairro e confirmação da taxa no checkout;
-- mudança de status para Pronto e impressão 58 mm;
-- mudança para Entregue e conferência no faturamento mensal;
-- cancelamento e devolução do estoque;
-- cadastro biométrico em HTTPS.
-
-A impressão usa a janela de impressão do navegador. Para impressão totalmente automática sem diálogo, é necessário configurar o navegador/computador em modo quiosque.
+A configuração do Supabase, Pix, WhatsApp, CEP, fretes e logins foi preservada da V54.7.

@@ -1,21 +1,12 @@
-# Doce Encanto V51 Estável
+# Doce Encanto V54.1 — ajustes seguros
 
-Versão baseada na V50 conectada ao Supabase, com correções de estabilidade no checkout.
+Base: V54 estável.
 
-## Correções principais
-- Eliminado o erro `Maximum call stack size exceeded` causado por atualização recursiva do frete/total.
-- CEP com consulta em duas fontes: ViaCEP e BrasilAPI.
-- Debounce no campo de CEP para evitar travamentos e requisições repetidas.
-- Base local de emergência para CEPs conhecidos da região.
-- Finalização do pedido mantém Supabase, desconto de estoque, pedidos pendentes e WhatsApp.
-- Cache atualizado para evitar que a Vercel/navegador carregue JavaScript antigo.
+Alterações mínimas:
+- chave Pix 31992180872, titular Ingrid Emanuelle Damasceno;
+- finalização abre o WhatsApp 55 31 99218-0872 com o pedido;
+- alarme opcional para pedido novo na Central;
+- pedidos Pix aparecem como Aguardando pagamento;
+- botão Confirmar comprovante muda para Pagamento confirmado e permite seguir para produção.
 
-## Publicação
-Extraia o ZIP e envie todos os arquivos internos para a raiz do repositório no GitHub. Após o deploy, faça uma atualização forçada da página ou limpe os dados do site uma vez.
-
-## Teste recomendado
-1. Adicione uma trufa ou promoção.
-2. Vá ao checkout e selecione Entrega.
-3. Digite um CEP válido e aguarde o preenchimento.
-4. Complete o número.
-5. Finalize e confirme que o pedido entra no Supabase e o WhatsApp abre.
+Não exige SQL novo.

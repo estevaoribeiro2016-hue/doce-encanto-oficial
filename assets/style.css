@@ -115,3 +115,8 @@ body.dark .choice p{color:var(--muted)}
 /* V54.7 — chave PIX mais visível */
 #pixCode{font-size:1.35rem!important;font-weight:900!important;letter-spacing:.08em!important;text-align:center!important;min-height:72px!important;line-height:1.35!important;padding:20px 14px!important;}
 @media(max-width:520px){#pixCode{font-size:1.2rem!important;letter-spacing:.06em!important;}}
+
+
+/* V55 — favoritos, histórico do cliente, testes e faturamento */
+.product{position:relative}.favoriteBtn{position:absolute;right:12px;top:12px;border:1px solid var(--line);background:var(--card);border-radius:999px;width:42px;height:42px;font-size:1.2rem;cursor:pointer;z-index:2}.favoriteBtn.active{box-shadow:0 8px 20px rgba(214,51,132,.25)}
+.customerGrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.favoriteGrid{display:grid;gap:10px}.favoriteItem{display:grid;grid-template-columns:auto 1fr auto auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:12px}.favoriteItem>span{font-size:1.8rem}.favoriteItem small{display:block;color:var(--muted)}.customerOrderCard{border:1px solid var(--line);border-radius:20px;padding:14px;margin-top:12px;background:rgba(255,255,255,.45)}body.dark .customerOrderCard{background:rgba(255,255,255,.04)}.testBadge{font-style:normal;font-size:.68rem;background:#ede9fe;color:#6d28d9;padding:4px 7px;border-radius:999px}.financeAudit{margin-top:16px}@media(max-width:820px){.customerGrid{grid-template-columns:1fr}.favoriteItem{grid-template-columns:auto 1fr}.favoriteItem button{width:100%}}
